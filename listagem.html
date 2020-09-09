@@ -39,77 +39,44 @@
                 </li>
             </ul>
         </nav>
-
         <div class="card my-2">
             <div class="card-header">
                 <h2 class="card-title">Veja os nossos veículos</h2>
             </div>
         </div>
 
-        <div class="card row col-12 mx-auto my-2">
-            <div class="card-body ">
-                <div class="row">
-                    <img src="" alt="" class="col-3">
-
-                    <div class="col-9 column">
-                        <h2 class="card-text">Modelo do Veículo</h2>
-                        <span class="card-text"><strong>Marca: &nbsp</strong>Railuque toda equipada</span><br>
-                        <span class="card-text"><strong>Preço: &nbsp</strong>R$ 150.499,00</span><br>
-                        <span class="card-text"><strong>Cor: &nbsp</strong>Preto</span><br>
-                        <span class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum eius
-                            accusantium
-                            minus maxime recusandae, eligendi odit architecto odio. Accusantium harum saepe natus at
-                            neque
-                            autem
-                            tenetur minus tempore inventore rem. Lorem ipsum dolor sit amet consectetur, adipisicing
-                            elit.
-                            Dolores, totam? Dolorem repudiandae, error, consequuntur sed at aliquid consectetur,
-                            recusandae
-                            molestias atque provident totam ratione obcaecati exercitationem reiciendis itaque labore
-                            nobis?</span>
-
-                        <div class="text-right my-4">
-                            <button type="button" class="btn btn-primary">Editar</button>
-                            <button type="button" class="btn btn-danger">Excluir</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card row col-12 mx-auto my-2">
-            <div class="card-body ">
-                <div class="row">
-                    <img src="" alt="" class="col-3">
-
-                    <div class="col-9 column">
-                        <h2 class="card-text">Modelo do Veículo</h2>
-                        <span class="card-text"><strong>Marca: &nbsp</strong>Railuque toda equipada</span><br>
-                        <span class="card-text"><strong>Preço: &nbsp</strong>R$ 150.499,00</span><br>
-                        <span class="card-text"><strong>Cor: &nbsp</strong>Preto</span><br>
-                        <span class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum eius
-                            accusantium
-                            minus maxime recusandae, eligendi odit architecto odio. Accusantium harum saepe natus at
-                            neque
-                            autem
-                            tenetur minus tempore inventore rem. Lorem ipsum dolor sit amet consectetur, adipisicing
-                            elit.
-                            Dolores, totam? Dolorem repudiandae, error, consequuntur sed at aliquid consectetur,
-                            recusandae
-                            molestias atque provident totam ratione obcaecati exercitationem reiciendis itaque labore
-                            nobis?</span>
-
-                        <div class="text-right my-4">
-                            <button type="button" class="btn btn-primary">Editar</button>
-                            <button type="button" class="btn btn-danger">Excluir</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <div id="lista"></div>
     </div>
+    <script>
+        function onLoad() {
+            console.log("entrou aqui");
+            const carros = JSON.parse(localStorage.getItem('carros'));
+            carros.forEach(carro => {
+                document.getElementById("lista").innerHTML += `
+        <div class="card row col-12 mx-auto my-2">
+            <div class="card-body ">
+                <div class="row">
+                    <img src="./fotos/${carro.foto}" alt="Foto do veículo ${carro.modelo}" class="col-3">
+                        <div class="col-9 column">
+                            <h2 class="card-text">${carro.modelo}</h2>
+                            <span class="card-text"><strong>Marca: &nbsp</strong>${carro.marca}</span><br>
+                            <span class="card-text"><strong>Preço: &nbsp</strong>R$ ${carro.preco}</span><br>
+                            <span class="card-text"><strong>Cor: &nbsp</strong>${carro.cor}</span><br>
+                            <span class="card-text">${carro.descricao}</span>
 
+                            <div class="text-right my-4">
+                                <button type="button" class="btn btn-primary">Editar</button>
+                                <button type="button" class="btn btn-danger">Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+            });
+        }
+        window.onLoad = onLoad();
+    </script>
 </body>
 
 </html>
