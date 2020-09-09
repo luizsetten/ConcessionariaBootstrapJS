@@ -45,18 +45,21 @@
             </div>
         </div>
 
-        <div id="lista"></div>
+        <div id="lista">
+        </div>
     </div>
     <script>
+
         function onLoad() {
             console.log("entrou aqui");
             const carros = JSON.parse(localStorage.getItem('carros'));
+            let count = 0;
             carros.forEach(carro => {
                 document.getElementById("lista").innerHTML += `
         <div class="card row col-12 mx-auto my-2">
             <div class="card-body ">
                 <div class="row">
-                    <img src="./fotos/${carro.foto}" alt="Foto do veículo ${carro.modelo}" class="col-3">
+                    <img src="./fotos/${carro.foto}" alt="Foto do veículo ${carro.modelo}" width="250" height="250" class="col-3">
                         <div class="col-9 column">
                             <h2 class="card-text">${carro.modelo}</h2>
                             <span class="card-text"><strong>Marca: &nbsp</strong>${carro.marca}</span><br>
@@ -65,17 +68,41 @@
                             <span class="card-text">${carro.descricao}</span>
 
                             <div class="text-right my-4">
-                                <button type="button" class="btn btn-primary">Editar</button>
-                                <button type="button" class="btn btn-danger">Excluir</button>
+                                <button type="button" class="editar btn btn-primary" key="${count}" id="editar">Editar</button>
+                                <button type="button" class="excluir btn btn-danger" key="${count}" id="excluir">Excluir</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         `;
+                count++;
             });
         }
         window.onLoad = onLoad();
+        // console.log(window.confirm("Tem certeza?"));
+        const editar = document.getElementsByClassName("editar");
+        const excluir = document.getElementsByClassName("excluir");
+        // console.log(editar)
+
+        for (let i = 0; i < editar.length; i++) {
+            editar[i].addEventListener("click", function (e) {
+                e.preventDefault();
+                const key = e.srcElement.getAttribute("key");
+                console.log(key);
+                window.location.replace(`./cadastro.html?key=${key}`);
+            });
+            excluir[i].addEventListener("click", function (e) {
+                e.preventDefault();
+                const key = e.srcElement.getAttribute("key");
+                let carros = JSON.parse(localStorage.getItem('carros'));
+                carros.splice(key,1);
+                localStorage.setItem('carros', JSON.stringify(carros));
+                window.location.replace('./listagem.html');
+            });
+        }
+
+
     </script>
 </body>
 

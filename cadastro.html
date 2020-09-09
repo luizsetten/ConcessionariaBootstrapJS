@@ -113,6 +113,7 @@
   </div>
   <script src="https://unpkg.com/vanilla-masker@1.1.1/build/vanilla-masker.min.js"></script>
   <script>
+    let editando = false;
     const marca = document.getElementById("inputMarca");
     const modelo = document.getElementById("inputModelo");
     const ano = document.getElementById("inputAno");
@@ -122,12 +123,41 @@
     const descricao = document.getElementById("inputDescricao");
     const cadastrar = document.getElementById("cadastrar");
     VMasker(preco).maskMoney({
-        precision: 2,
-        separator: ',',
-        delimiter: '.',
-        unit: 'R$',
-        zeroCents: false
-      });
+      precision: 2,
+      separator: ',',
+      delimiter: '.',
+      unit: 'R$',
+      zeroCents: false
+    });
+
+    window.onload = onLoad();
+
+    function queryObj() {
+        const result = {}, keyValuePairs = location.search.slice(1).split("&");
+        keyValuePairs.forEach(function (keyValuePair) {
+          keyValuePair = keyValuePair.split('=');
+          result[decodeURIComponent(keyValuePair[0])] = decodeURIComponent(keyValuePair[1]) || '';
+        });
+        return result;
+      }
+
+    function onLoad() {
+      const myParam = queryObj();
+      if(myParam.key) {
+        editando = true;
+        // console.log(myParam.key);
+        const key = myParam.key;
+        const carros = JSON.parse(localStorage.getItem('carros'));
+        // console.log(carros);
+        marca.value = carros[key].marca;
+        modelo.value = carros[key].modelo;
+        preco.value = carros[key].preco;
+        ano.value = carros[key].ano;
+        foto.value = carros[key].foto;
+        cor.value = carros[key].cor;
+        descricao.value = carros[key].descricao;
+      } 
+    }
 
     function validar() {
       let error = false
@@ -160,6 +190,7 @@
     }
 
     async function inserir() {
+
       const preco2 = VMasker.toNumber(preco.value);
 
       const carros = await JSON.parse(localStorage.getItem('carros')) || [];
@@ -168,12 +199,18 @@
         marca: marca.value,
         modelo: modelo.value,
         ano: ano.value,
-        preco: preco2/100,
+        preco: preco2 / 100,
         foto: foto.value,
         cor: cor.value,
         descricao: descricao.value,
       }
-      carros.push(carro);
+      if(editando){
+        const i = queryObj().key;
+        carros[i] = carro;
+      } else {
+        carros.push(carro);
+      }
+      
       await localStorage.setItem('carros', JSON.stringify(carros));
     }
 
@@ -185,7 +222,7 @@
       e.preventDefault();
       if (validar()) {
         inserir();
-        window.alert("Cadastrado com sucesso!");
+        window.alert("Inserção de dados realizada com sucesso!");
         window.location.replace('./listagem.html');
       }
     });
