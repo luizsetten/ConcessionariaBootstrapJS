@@ -80,25 +80,25 @@
             });
         }
         window.onLoad = onLoad();
-        // console.log(window.confirm("Tem certeza?"));
         const editar = document.getElementsByClassName("editar");
         const excluir = document.getElementsByClassName("excluir");
-        // console.log(editar)
 
         for (let i = 0; i < editar.length; i++) {
             editar[i].addEventListener("click", function (e) {
                 e.preventDefault();
                 const key = e.srcElement.getAttribute("key");
-                console.log(key);
                 window.location.replace(`./cadastro.html?key=${key}`);
             });
             excluir[i].addEventListener("click", function (e) {
                 e.preventDefault();
                 const key = e.srcElement.getAttribute("key");
                 let carros = JSON.parse(localStorage.getItem('carros'));
-                carros.splice(key,1);
-                localStorage.setItem('carros', JSON.stringify(carros));
-                window.location.replace('./listagem.html');
+                if (window.confirm("Confirma a exclusão?")) {
+                    carros.splice(key, 1);
+                    localStorage.setItem('carros', JSON.stringify(carros));
+                    alert("Exclusão efetuada");
+                    window.location.replace('./listagem.html');
+                }
             });
         }
 

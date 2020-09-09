@@ -104,9 +104,9 @@
         </div>
 
       </div>
-      <div class="text-right">
+      <div class="text-right" id="botoes">
         <button type="submit" class="btn btn-primary" id="cadastrar">Cadastrar Veículo</button>
-        <button type="submit" class="btn btn-secondary">Limpar</button>
+        <button type="submit" class="btn btn-secondary" id="limpar">Limpar</button>
       </div>
     </form>
 
@@ -122,6 +122,7 @@
     const cor = document.getElementById("inputCor");
     const descricao = document.getElementById("inputDescricao");
     const cadastrar = document.getElementById("cadastrar");
+    const limpar = document.getElementById("limpar");
     VMasker(preco).maskMoney({
       precision: 2,
       separator: ',',
@@ -143,12 +144,12 @@
 
     function onLoad() {
       const myParam = queryObj();
+      const cadastrar = document.getElementById("cadastrar");
+      const limpar = document.getElementById("limpar");
       if(myParam.key) {
         editando = true;
-        // console.log(myParam.key);
         const key = myParam.key;
         const carros = JSON.parse(localStorage.getItem('carros'));
-        // console.log(carros);
         marca.value = carros[key].marca;
         modelo.value = carros[key].modelo;
         preco.value = carros[key].preco;
@@ -156,7 +157,10 @@
         foto.value = carros[key].foto;
         cor.value = carros[key].cor;
         descricao.value = carros[key].descricao;
+        cadastrar.innerHTML = `Salvar Edição`;
+        limpar.innerHTML = `Cancelar`;
       } 
+
     }
 
     function validar() {
@@ -226,6 +230,13 @@
         window.location.replace('./listagem.html');
       }
     });
+
+    limpar.addEventListener("click", function (e) {
+      if(editando){
+        e.preventDefault();
+        window.location.replace('./listagem.html');
+      }
+      });
 
   </script>
 </body>
