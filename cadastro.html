@@ -169,15 +169,15 @@
         error = true;
         marca.nextElementSibling.removeAttribute("hidden");
       }
-      if (!modelo.value) {
+      if (!modelo.value || String(modelo.value).length < 2) {
         error = true;
         modelo.nextElementSibling.removeAttribute("hidden");
       }
-      if (!ano.value) {
+      if (!ano.value || Number(ano.value) <= 1900) {
         error = true;
         ano.nextElementSibling.removeAttribute("hidden");
       }
-      if (!preco.value) {
+      if (!preco.value || VMasker.toNumber(preco.value) > 10000000000) {
         error = true;
         preco.nextElementSibling.removeAttribute("hidden");
       }
@@ -194,7 +194,6 @@
     }
 
     async function inserir() {
-
       const preco2 = VMasker.toNumber(preco.value);
 
       const carros = await JSON.parse(localStorage.getItem('carros')) || [];
